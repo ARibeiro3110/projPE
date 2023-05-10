@@ -9,7 +9,9 @@ dados <- subset(dados, dados$AGE == "1524" | dados$AGE == "2554" | dados$AGE == 
 dados <- subset(dados, dados$TIME == 2019)
 dados <- subset(dados, dados$COU == "NOR")
 
-ggplot(dados, aes(x = SEX, y = Value, fill = factor(AGE))) +
+dev.new()
+par(mar = c(5, 7, 4, 2), cex.axis = 1)
+ggplot(dados, aes(x = Age.Group, y = Value, fill = factor(Sex))) +
   geom_col(position = "dodge", colour = "black") +
   geom_text(
     aes(label = Value), vjust = 1.5,
@@ -17,7 +19,8 @@ ggplot(dados, aes(x = SEX, y = Value, fill = factor(AGE))) +
     position = position_dodge(.9)
   ) +
   scale_fill_brewer(palette = "Pastel2") +
-  xlab("País") +
-  ylab("Resíduos Produzidos Per Capita (Toneladas)") +
-  labs(fill = "Ano", subtitle = "na Áustria, Alemanha e Portugal") +
-  ggtitle("Resíduos Produzidos Per Capita (Tolenada) em 2004 e 2018")
+  xlab("\nAge group") +
+  ylab("Employment / population ratio\n") +
+  labs(fill = "Sex", subtitle = "in Norway") +
+  ggtitle("Employment/population ratio, by sex and age group in 2019") +
+  theme(axis.text = element_text(size = 12))
