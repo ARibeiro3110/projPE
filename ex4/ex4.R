@@ -6,7 +6,15 @@ X <- rexp(k, rate = lambda)
 S <- cumsum(X)
 T <- ceiling(S[k])
 
-I <- c(rep(0, T))
+eventos_por_intervalo <- rep(0, T)
 for (s in S) {
-  I[ceiling(s)] = I[ceiling(s)] + 1
+  eventos_por_intervalo[ceiling(s)] = eventos_por_intervalo[ceiling(s)] + 1
 }
+
+media_eventos <- mean(eventos_por_intervalo)
+
+valor_esperado <- lambda # 1/(1/lambda)
+
+desvio_absoluto <- round(abs(media_eventos - valor_esperado), 4)
+
+desvio_absoluto
