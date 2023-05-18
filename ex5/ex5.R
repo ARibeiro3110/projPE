@@ -4,9 +4,7 @@ n <- 1153
 
 vetor <- rep(-1, n)
 
-i <- 1
-
-while (i <= n) {
+for (i in 1:n) {
   u <- runif(1, 0, 1)
   
   x <- 0
@@ -19,8 +17,15 @@ while (i <= n) {
     }
     x <- x + 1
   }
-  
-  i <- i + 1
 }
 
-# CONTINUAR
+media <- mean(vetor)
+desvio_padrao <- sd(vetor)
+
+valores_superiores_media <- vetor[vetor > media]
+
+valores_final <- valores_superiores_media[valores_superiores_media > (media + desvio_padrao)]
+
+proporcao <- round(length(valores_final) / length(valores_superiores_media), 4)
+
+proporcao
