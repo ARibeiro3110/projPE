@@ -6,7 +6,7 @@ X <- rexp(k, rate = lambda)
 S <- cumsum(X)
 T <- ceiling(S[k])
 
-eventos_por_intervalo <- rep(0, T)
+eventos_por_intervalo <- numeric(T)
 for (s in S) {
   eventos_por_intervalo[ceiling(s)] = eventos_por_intervalo[ceiling(s)] + 1
 }
