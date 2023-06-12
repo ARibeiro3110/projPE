@@ -6,10 +6,7 @@ X <- rexp(k, rate = lambda)
 S <- cumsum(X)
 T <- ceiling(S[k])
 
-eventos_por_intervalo <- numeric(T)
-for (s in S) {
-  eventos_por_intervalo[ceiling(s)] = eventos_por_intervalo[ceiling(s)] + 1
-}
+eventos_por_intervalo <- hist(S, breaks = seq(0, T, 1), plot = FALSE)$counts
 
 media_eventos <- mean(eventos_por_intervalo)
 
