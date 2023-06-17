@@ -10,8 +10,8 @@ for (i in 1:m) {
   somas_quadrados[i] <- sum(amostra^2)
 }
 
-quantil_amostra <- quantile(somas_quadrados, probs = 0.69, type = 2)
-quantil_teorico <- qchisq(0.69, df = n)
+quantil_amostra <- quantile(somas_quadrados, probs = quantil, type = 2)
+quantil_teorico <- qchisq(quantil, df = n)
 
 diferenca <- round(abs(quantil_amostra - quantil_teorico), 4)
 
