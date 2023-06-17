@@ -6,7 +6,7 @@ quantil <- 0.69
 somas_quadrados <- numeric(m)
 
 for (i in 1:m) {
-  amostra <- rnorm(n)
+  amostra <- rnorm(n, mean = 0, sd = 1)
   somas_quadrados[i] <- sum(amostra^2)
 }
 

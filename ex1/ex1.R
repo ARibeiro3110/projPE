@@ -1,24 +1,28 @@
-# install.packages("rio")
-# install.packages("ggplot2")
-
 library(rio)
 library(ggplot2)
 
+# Carregamento dos dados
 econ <- import("https://web.tecnico.ulisboa.pt/~paulo.soares/pe/projeto/econ.xlsx")
+
+# Filtragem dos dados por data
 econ <- subset(econ, as.Date(econ$tempo) >= as.Date("1987-01-01"))
 
+# Variáveis a utilizar
 X1 <- econ$gcp
 X2 <- econ$tpp
 
-X1 <- (X1 - mean(X1)) / sd(X1)
-X2 <- (X2 - mean(X2)) / sd(X2)
+# Transformação aos dados
+Z1 <- (X1 - mean(X1)) / sd(X1)
+Z2 <- (X2 - mean(X2)) / sd(X2)
 
+# Dados para a construção do gráfico
 df <- data.frame(econ$tempo, X1, X2)
 
+# Construção do gráfico
 dev.new()
 ggplot(data = df, mapping = aes(x = econ$tempo)) +
-  geom_line(aes(y = X1, color = "GCP")) +
-  geom_line(aes(y = X2, color = "TPP")) +
-  scale_color_manual("", values = c("GCP" = "red", "TPP" = "blue")) +
-  labs(x = "Data", y = "", title = "Gastos de consumo pessoal e Taxa de poupança pessoal ") +
-  theme_minimal()
+  geom_line(aes(y = Z1, color = "Gastos de consumo pessoal\n(biliões de dólares)")) +
+  geom_line(aes(y = Z2, color = "Taxa de poupança pessoal")) +
+  scale_color_manual("", values = c("red", "blue")) +
+  labs(x = "Tempo", y = "Dados transformados",
+       title = "Evolução dos gastos de consumo pessoal e da taxa de poupança pessoal a partir de 1987")
