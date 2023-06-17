@@ -10,6 +10,7 @@ medias_diferencas <- numeric(length(n_values))
 
 for (i in 1:m) {
   diferencas <- numeric(k)
+  n <- n_values[i]
   
   for (j in 1:k) {
     X <- rbinom(n, size = 1, prob = p)
@@ -23,17 +24,17 @@ for (i in 1:m) {
       b <- -2 * media - z^2 / n
       c <- media^2
       solucao1 <- (-b - sqrt(b^2 - 4*a*c)) / (2*a)
-      solucao2 <- (-b - sqrt(b^2 - 4*a*c)) / (2*a)
-      comprimento1 <- abs(solucao1 - solucao2)
+      solucao2 <- (-b + sqrt(b^2 - 4*a*c)) / (2*a)
+      comprimento1 <- solucao2 - solucao1
     
     # Método 2
-    b <- qnorm(1 - α/2, mean = 0, sd = 1)
-    limite_inferior <- media - b * sqrt( (media * (1 - media)) / n_values[i])
-    limite_superior <- media + b * sqrt( (media * (1 - media)) / n_values[i])
+    b_ <- qnorm(1 - α/2, mean = 0, sd = 1)
+    limite_inferior <- media - b_ * sqrt( (media * (1 - media)) / n_values[i])
+    limite_superior <- media + b_ * sqrt( (media * (1 - media)) / n_values[i])
     comprimento2 <- limite_superior - limite_inferior
     
     # Diferença entre os comprimentos
-    diferencas[j] <- abs(comprimento2 - comprimento1)
+    diferencas[j] <- comprimento2 - comprimento1
   }
   
   medias_diferencas[i] <- mean(diferencas)
@@ -41,8 +42,10 @@ for (i in 1:m) {
 
 # Criar o gráfico
 dev.new()
+par(mar = c(5, 5, 4, 2))
 plot(n_values, medias_diferencas, col = "blue", pch = 19, type = "b",
      xlab = "Tamanho da amostra",
      ylab = "Diferença entre os comprimentos dos intervalos de confiança",
-     main = "Diferenças médias entre os comprimentos dos intervalos de confiança
-construídos pelo Método 2 e pelo Método 1, em função do tamanho da amostra")
+     cex.lab = 1.4, cex.main = 1.5, cex.axis = 1.3, cex = 1.5,
+     main = paste("Diferenças médias entre os comprimentos dos intervalos de confiança\n",
+                  "construídos pelo Método 2 e pelo Método 1, em função do tamanho da amostra"))

@@ -26,12 +26,14 @@ quantis_normal <- qnorm(q, mean = μ, sd = σ)
 
 # Criar o gráfico
 dev.new()
+par(mar = c(5, 5, 4, 2))
 plot(quantis_cauchy, amostra_cauchy, col = "blue", pch = 19,
      xlab = "Quantis de probabilidade",
      ylab = "Amostra ordenada",
-     main = "Gráfico Q-Q de uma amostra de uma população com distribuição de Cauchy
-para distribuições Normal e de Cauchy")
+     cex.lab = 1.4, cex.main = 1.3, cex.axis = 1.3,
+     main = paste("Gráfico Q-Q de uma amostra de uma população com distribuição",
+                  "de Cauchy para distribuições Normal e de Cauchy"))
 
 points(quantis_normal, amostra_cauchy, col = "red", pch = 19)
 abline(0, 1, col = "green")
-legend("bottomright", legend = c("Cauchy", "Normal"), col = c("blue", "red"), pch = 19)
+legend("bottomright", legend = c("Cauchy", "Normal"), col = c("blue", "red"), pch = 19, cex = 1.2)

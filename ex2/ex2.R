@@ -14,10 +14,11 @@ trabalho <- subset(tempo, tempo$Ocupação == "Trabalho remunerado ou estudo")
 
 # Construção dos diagramas de extremos e quantis
 dev.new()
-par(mar = c(5, 7, 4, 2), cex.axis = 1)
+par(mar = c(5, 10, 4, 2), cex.axis = 1.8)
 boxplot(cuidados$Tempo, trabalho$Tempo, col = c("red", "blue"),
-        main = "Tempos médios diários registados para Total (Homens + Mulheres)
-em duas ocupações distintas",
+        main = paste("Tempos médios diários registados para Total",
+                     "(Homens + Mulheres) em duas ocupações distintas"),
         xlab = "Tempo médio diário (minutos)",
         horizontal = TRUE, names = c("Cuidados\npessoais",
-                                     "Trabalho\nremunerado\nou estudo"), las = 1)
+                                     "Trabalho\nremunerado\nou estudo"), las = 1,
+        cex.main = 2.2, cex.lab = 1.8, boxwex = 0.6)
