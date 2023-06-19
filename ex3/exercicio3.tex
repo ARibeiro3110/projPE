@@ -1,0 +1,123 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage[top=15mm, bottom=15mm, left=13mm, right=13mm]{geometry}
+\pagenumbering{gobble}
+
+% Packages for headers and footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% Define your custom R style
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    literate=%
+        {á}{{\'a}}1
+        {é}{{\'e}}1
+        {í}{{\'i}}1
+        {ó}{{\'o}}1
+        {ú}{{\'u}}1
+        {Á}{{\'A}}1
+        {É}{{\'E}}1
+        {Í}{{\'I}}1
+        {Ó}{{\'O}}1
+        {Ú}{{\'U}}1
+        {à}{{\`a}}1
+        {è}{{\`e}}1
+        {ì}{{\`i}}1
+        {ò}{{\`o}}1
+        {ù}{{\`u}}1
+        {À}{{\`A}}1
+        {È}{{\`E}}1
+        {Ì}{{\`I}}1
+        {Ò}{{\`O}}1
+        {Ù}{{\`U}}1
+        {ã}{{\~a}}1
+        {õ}{{\~o}}1
+        {Ã}{{\~A}}1
+        {Õ}{{\~O}}1
+        {ç}{{\c c}}1
+        {Ç}{{\c C}}1
+}
+
+\lstset{style=mystyle}
+
+% Define your headers
+\rhead{Miguel Freitas (102756)}
+\lhead{Afonso Ribeiro (102763)} % left side empty
+\chead{Luís Correia (103528)} % center empty
+
+
+
+\begin{document}
+\centering
+\noindent{\Large{\textbf{Projeto Computacional de Probabilidade e 
+Estatística – Exercício 3}}}
+\vspace{3mm}
+
+\begin{lstlisting}[language=R, xleftmargin=4em, xrightmargin=4em]
+library(ggplot2)
+
+# Carregamento dos dados
+dados <- read.csv("https://web.tecnico.ulisboa.pt/~paulo.soares/pe/projeto/GENDER_EMP_19032023152556091.txt",
+                  sep = "\t", header = TRUE)
+
+# Eliminação dos dados não referentes à variável relevante
+dados <- subset(dados, dados$IND == "EMP2")
+
+# Filtragem por sexo, grupos etários, ano e país
+dados <- subset(dados, dados$SEX == "MEN" | dados$SEX == "WOMEN")
+dados <- subset(dados, dados$AGE == "1524" | dados$AGE == "2554" | dados$AGE == "5564")
+dados <- subset(dados, dados$TIME == 2019)
+dados <- subset(dados, dados$COU == "NOR")
+
+dev.new()
+par(mar = c(5, 7, 4, 2), cex.axis = 1)
+ggplot(dados, aes(x = Age.Group, y = Value, fill = factor(Sex))) +
+  ggtitle("Employment/population ratio, by sex and age group in 2019 in Norway") +
+  xlab("\nAge group") +
+  ylab("Employment / population ratio\n") +
+  labs(fill = "") +
+  geom_col(position = "dodge", colour = "black") +
+  geom_text(
+    aes(label = Value), vjust = 1.5,
+    colour = "black", size = 8,
+    position = position_dodge(.9)
+  ) +
+  theme(  plot.title = element_text(size = 30),
+          axis.title.x = element_text(size = 24), axis.title.y = element_text(size = 24),
+          legend.text = element_text(size = 22), legend.key = element_blank(),
+          axis.text.x = element_text(size = 24), axis.text.y = element_text(size = 24))
+\end{lstlisting}
+
+\vspace{0.4cm}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth, height=0.44\textheight, keepaspectratio]{ex3.jpeg} 
+\label{fig:mylabel}
+\end{figure}
+
+\end{document}

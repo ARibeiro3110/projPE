@@ -1,0 +1,155 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage[top=15mm, bottom=6mm, left=13mm, right=13mm]{geometry}
+\pagenumbering{gobble}
+\usepackage{textgreek}
+
+% Packages for headers and footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% Define your custom R style
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\scriptsize,  % Change this line
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    literate=%
+        {á}{{\'a}}1
+        {é}{{\'e}}1
+        {í}{{\'i}}1
+        {ó}{{\'o}}1
+        {ú}{{\'u}}1
+        {Á}{{\'A}}1
+        {É}{{\'E}}1
+        {Í}{{\'I}}1
+        {Ó}{{\'O}}1
+        {Ú}{{\'U}}1
+        {à}{{\`a}}1
+        {è}{{\`e}}1
+        {ì}{{\`i}}1
+        {ò}{{\`o}}1
+        {ù}{{\`u}}1
+        {À}{{\`A}}1
+        {È}{{\`E}}1
+        {Ì}{{\`I}}1
+        {Ò}{{\`O}}1
+        {Ù}{{\`U}}1
+        {ã}{{\~a}}1
+        {õ}{{\~o}}1
+        {Ã}{{\~A}}1
+        {â}{{\~A}}1
+        {Õ}{{\~O}}1
+        {ç}{{\c c}}1
+        {Ç}{{\c C}}1
+        {α}{{\textalpha}}1
+        {β}{{\textbeta}}1
+        {μ}{{\textmu}}1
+        {σ}{{\textsigma}}1
+        {γ}{{\textgamma}}1
+}
+
+\lstset{style=mystyle}
+
+% Define your headers
+\rhead{Miguel Freitas (102756)}
+\lhead{Afonso Ribeiro (102763)} % left side empty
+\chead{Luís Correia (103528)} % center empty
+
+
+
+\begin{document}
+\centering
+\noindent{\Large{\textbf{Projeto Computacional de Probabilidade e 
+Estatística – Exercício 9}}}
+\vspace{3mm}
+
+\begin{lstlisting}[language=R, xleftmargin=4em, xrightmargin=4em]
+set.seed(1593)
+k <- 1000
+p <- 0.5
+γ <- 0.91
+α <- 1 - γ
+n_values <- c(30, 50, 100, 200, 300, 500, 1000)
+m <- length(n_values)
+
+medias_diferencas <- numeric(length(n_values))
+
+for (i in 1:m) {
+  diferencas <- numeric(k)
+  n <- n_values[i]
+  
+  for (j in 1:k) {
+    X <- rbinom(n, size = 1, prob = p)
+    
+    # Método 1
+    media <- mean(X)
+    z <- qnorm((1 + γ)/2, mean = 0, sd = 1)
+    
+      ## Resolução da equação de segundo grau:
+      a <- (1 + z^2 / n)
+      b <- -2 * media - z^2 / n
+      c <- media^2
+      solucao1 <- (-b - sqrt(b^2 - 4*a*c)) / (2*a)
+      solucao2 <- (-b + sqrt(b^2 - 4*a*c)) / (2*a)
+      comprimento1 <- solucao2 - solucao1
+    
+    # Método 2
+    b_ <- qnorm(1 - α/2, mean = 0, sd = 1)
+    limite_inferior <- media - b_ * sqrt( (media * (1 - media)) / n_values[i])
+    limite_superior <- media + b_ * sqrt( (media * (1 - media)) / n_values[i])
+    comprimento2 <- limite_superior - limite_inferior
+    
+    # Diferença entre os comprimentos
+    diferencas[j] <- comprimento2 - comprimento1
+  }
+  
+  medias_diferencas[i] <- mean(diferencas)
+}
+
+# Criar o gráfico
+dev.new()
+par(mar = c(5, 5, 4, 2))
+plot(n_values, medias_diferencas, col = "blue", pch = 19, type = "b",
+     xlab = "Tamanho da amostra",
+     ylab = "Diferença entre os comprimentos dos intervalos de confiança",
+     cex.lab = 1.4, cex.main = 1.5, cex.axis = 1.3, cex = 1.5,
+     main = paste("Diferenças médias entre os comprimentos dos intervalos de confiança\n",
+                  "construídos pelo Método 2 e pelo Método 1, em função do tamanho da amostra"))
+\end{lstlisting}
+
+\vspace{0.1cm}
+
+\begin{figure}[ht]
+\begin{minipage}{0.63\textwidth}
+\centering
+\includegraphics[width=\linewidth, height=0.7\textheight, keepaspectratio]{ex9.jpeg}
+\label{fig:mylabel}
+\end{minipage}
+\begin{minipage}{0.3\textwidth}
+Para encontrar os limites do intervalo de confiança do parâmetro p, deve-se isolar o valor de p e encontrar as raízes do polinómio de 2.º grau, tal como é explicado no método 1. O método 2 baseia-se no facto de que $\bar{X}$ é um estimador consistente de p e, como tal, substitui-se p no denominador de Z por $\bar{X}$, o que facilita os cálculos.
+Tendo isto em conta, é natural que, quanto maior o tamanho da amostra, melhor é a estimação de p por $\bar{X}$, ou seja, menor será o erro da utilização do estimador de p ao invés de p, no método 2. Isto é corroborado pelo gráfico obtido, que mostra que, com o aumento do tamanho da amostra, a diferença entre os comprimentos dos intervalos de confiança construídos pelo método 2 e pelo método 1 diminui, ou seja, vão-se tornando cada vez mais equiparáveis.
+\end{minipage}
+\end{figure}
+
+\end{document}

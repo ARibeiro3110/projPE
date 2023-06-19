@@ -1,0 +1,115 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage[top=15mm, bottom=15mm, left=13mm, right=13mm]{geometry}
+\pagenumbering{gobble}
+
+% Packages for headers and footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% Define your custom R style
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    literate=%
+        {á}{{\'a}}1
+        {é}{{\'e}}1
+        {í}{{\'i}}1
+        {ó}{{\'o}}1
+        {ú}{{\'u}}1
+        {Á}{{\'A}}1
+        {É}{{\'E}}1
+        {Í}{{\'I}}1
+        {Ó}{{\'O}}1
+        {Ú}{{\'U}}1
+        {à}{{\`a}}1
+        {è}{{\`e}}1
+        {ì}{{\`i}}1
+        {ò}{{\`o}}1
+        {ù}{{\`u}}1
+        {À}{{\`A}}1
+        {È}{{\`E}}1
+        {Ì}{{\`I}}1
+        {Ò}{{\`O}}1
+        {Ù}{{\`U}}1
+        {ã}{{\~a}}1
+        {õ}{{\~o}}1
+        {Ã}{{\~A}}1
+        {Õ}{{\~O}}1
+        {ç}{{\c c}}1
+        {Ç}{{\c C}}1
+}
+
+\lstset{style=mystyle}
+
+% Define your headers
+\rhead{Miguel Freitas (102756)}
+\lhead{Afonso Ribeiro (102763)} % left side empty
+\chead{Luís Correia (103528)} % center empty
+
+
+
+\begin{document}
+\centering
+\noindent{\Large{\textbf{Projeto Computacional de Probabilidade e 
+Estatística – Exercício 2}}}
+\vspace{3mm}
+
+\begin{lstlisting}[language=R, xleftmargin=2em, xrightmargin=2em]
+# Carregamento dos dados
+tempo <- read.csv("https://web.tecnico.ulisboa.pt/~paulo.soares/pe/projeto/TIME_USE_24092022.csv",
+         sep = ",", header = TRUE)
+
+# Eliminação dos registos referentes à África do Sul
+tempo <- subset(tempo, tempo$País != "África do Sul")
+
+# Registos para Total (Homens + Mulheres)
+tempo <- subset(tempo, tempo$Sexo == "Total")
+
+# Dados das ocupações a utilizar
+cuidados <- subset(tempo, tempo$Ocupação == "Cuidados pessoais")
+trabalho <- subset(tempo, tempo$Ocupação == "Trabalho remunerado ou estudo")
+
+# Construção dos diagramas de extremos e quantis
+dev.new()
+par(mar = c(5, 10, 4, 2), cex.axis = 1.8)
+boxplot(cuidados$Tempo, trabalho$Tempo, col = c("red", "blue"),
+        main = paste("Tempos médios diários registados para Total",
+                     "(Homens + Mulheres) em duas ocupações distintas"),
+        xlab = "Tempo médio diário (minutos)",
+        horizontal = TRUE, names = c("Cuidados\npessoais",
+                                     "Trabalho\nremunerado\nou estudo"), las = 1,
+        cex.main = 2.2, cex.lab = 1.8, boxwex = 0.6)
+\end{lstlisting}
+
+\vspace{0.4cm}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth, height=0.8\textheight, keepaspectratio]{ex2.jpeg} 
+\label{fig:mylabel}
+\end{figure}
+
+\end{document}

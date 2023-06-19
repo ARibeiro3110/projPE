@@ -1,0 +1,136 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage[top=15mm, bottom=10mm, left=13mm, right=13mm]{geometry}
+\pagenumbering{gobble}
+\usepackage{textgreek}
+
+% Packages for headers and footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% Define your custom R style
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    literate=%
+        {á}{{\'a}}1
+        {é}{{\'e}}1
+        {í}{{\'i}}1
+        {ó}{{\'o}}1
+        {ú}{{\'u}}1
+        {Á}{{\'A}}1
+        {É}{{\'E}}1
+        {Í}{{\'I}}1
+        {Ó}{{\'O}}1
+        {Ú}{{\'U}}1
+        {à}{{\`a}}1
+        {è}{{\`e}}1
+        {ì}{{\`i}}1
+        {ò}{{\`o}}1
+        {ù}{{\`u}}1
+        {À}{{\`A}}1
+        {È}{{\`E}}1
+        {Ì}{{\`I}}1
+        {Ò}{{\`O}}1
+        {Ù}{{\`U}}1
+        {ã}{{\~a}}1
+        {õ}{{\~o}}1
+        {Ã}{{\~A}}1
+        {â}{{\~A}}1
+        {Õ}{{\~O}}1
+        {ç}{{\c c}}1
+        {Ç}{{\c C}}1
+        {α}{{\textalpha}}1
+        {β}{{\textbeta}}1
+        {μ}{{\textmu}}1
+        {σ}{{\textsigma}}1
+}
+
+\lstset{style=mystyle}
+
+% Define your headers
+\rhead{Miguel Freitas (102756)}
+\lhead{Afonso Ribeiro (102763)} % left side empty
+\chead{Luís Correia (103528)} % center empty
+
+
+
+\begin{document}
+\centering
+\noindent{\Large{\textbf{Projeto Computacional de Probabilidade e 
+Estatística – Exercício 8}}}
+\vspace{3mm}
+
+\begin{lstlisting}[language=R, xleftmargin=4em, xrightmargin=4em]
+# Configurar a semente
+set.seed(1208)
+
+# Parâmetros da distribuição de Cauchy
+α <- 2.8
+β <- 2
+
+# Tamanho da amostra
+n <- 163
+
+# Parâmetros da distribuição normal
+μ <- 0.5
+σ <- sqrt(1.4)
+
+# Calcular as probabilidades dos quantis
+q <- seq(1, n) / (n + 1)
+
+# Gerar a amostra e ordenar
+amostra_cauchy <- sort(rcauchy(n, location = α, scale = β))
+
+# Quantis da distribuição de Cauchy
+quantis_cauchy <- qcauchy(q, location = α, scale = β)
+
+# Quantis da distribuição Normal
+quantis_normal <- qnorm(q, mean = μ, sd = σ)
+
+# Criar o gráfico
+dev.new()
+par(mar = c(5, 5, 4, 2))
+plot(quantis_cauchy, amostra_cauchy, col = "blue", pch = 19,
+     xlab = "Quantis de probabilidade",
+     ylab = "Amostra ordenada",
+     cex.lab = 1.4, cex.main = 1.3, cex.axis = 1.3,
+     main = paste("Gráfico Q-Q de uma amostra de uma população com distribuição",
+                  "de Cauchy para distribuições Normal e de Cauchy"))
+
+points(quantis_normal, amostra_cauchy, col = "red", pch = 19)
+abline(0, 1, col = "green")
+legend("bottomright", legend = c("Cauchy", "Normal"), col = c("blue", "red"), pch = 19, cex = 1.2)
+\end{lstlisting}
+
+\vspace{0.4cm}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth, height=\textheight, keepaspectratio]{ex8.jpeg} 
+\label{fig:mylabel}
+\end{figure}
+
+\end{document}
